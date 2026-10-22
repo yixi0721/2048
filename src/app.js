@@ -145,6 +145,13 @@ function activate(item) {
     render(); closeDrawers(); say(selectedItem ? (item === 'clear' ? '点选要清除的方块。' : '依次点选两个方块。') : '已取消选择。');
     return;
   }
+  if (item === 'shuffle') {
+    selectedItem = null; selection = []; renderBoard(); closeDrawers();
+    $('shuffleDialog').returnValue = '';
+    $('shuffleDialog').showModal();
+    say('请选择最大数字所在角落。');
+    return;
+  }
   try { consume(item, useItem(g, item)); closeDrawers(); } catch (error) { say(error.message); }
 }
 function consume(item, result) {
@@ -213,6 +220,17 @@ async function switchMode() {
 $('modeSwitch').addEventListener('click', switchMode);
 $('newGame').addEventListener('click', requestNewGame);
 $('confirmNewGame').addEventListener('click', () => { $('newGameDialog').close(); startNew(); });
+$('shuffleDialog').querySelectorAll('[data-corner]').forEach(button => button.addEventListener('click', () => {
+  const corner = button.dataset.corner;
+  try {
+    if (isPure() || !state.profile.inventory.shuffle || !canUse(game(), 'shuffle')) throw new Error('此时无法使用道具');
+    const result = useItem(game(), 'shuffle', corner);
+    $('shuffleDialog').close('chosen');
+    consume('shuffle', result);
+    say(`已重排，最大数字位于${button.textContent}。`);
+  } catch (error) { say(error.message); }
+}));
+$('shuffleDialog').addEventListener('close', () => { if ($('shuffleDialog').returnValue !== 'chosen') say('已取消重排。'); });
 $('mergeBounce').addEventListener('change', event => { state.settings.mergeBounce = event.target.checked; persist(); say(`Q 弹合成动效已${event.target.checked ? '开启' : '关闭'}。`); });
 $('helpButton').addEventListener('click', () => $('helpDialog').showModal());
 $('itemsButton').addEventListener('click', () => { if (!isPure()) $('itemsDrawer').showModal(); });
@@ -276,7 +294,7 @@ document.querySelectorAll('.drawer').forEach(drawer => {
 });
 $('board').addEventListener('click', event => { const cell = event.target.closest('.cell'); if (cell) selectCell(Number(cell.dataset.index)); });
 window.addEventListener('keydown', event => {
-  if ($('helpDialog').open || $('newGameDialog').open || document.querySelector('.drawer[open]')) return;
+  if ($('helpDialog').open || $('newGameDialog').open || $('shuffleDialog').open || document.querySelector('.drawer[open]')) return;
   const directions = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right' };
   if (directions[event.key]) { event.preventDefault(); attemptMove(directions[event.key]); }
 });
