@@ -74,6 +74,26 @@ test('重排小数字在上、大数字在下，续局保留最大方块与分�
   assert.deepEqual(continued.board.slice(0, 5), [0, 64, 2, 64, 4]);
   assert.equal(continued.uses.continue, 1);
 });
+test('规则重排在 4×4 和 5×5 上都可指定最大数字的四个角', () => {
+  for (const size of [4, 5]) {
+    const values = [2, 4, 8, 64];
+    const initial = { ...gameWith([...values, ...Array(size * size - values.length).fill(0)], size), score: 200 };
+    const corners = [
+      ['top-left', 0, size * size - 1],
+      ['top-right', size - 1, size * (size - 1)],
+      ['bottom-left', size * (size - 1), size - 1],
+      ['bottom-right', size * size - 1, 0]
+    ];
+    for (const [corner, largestIndex, smallestIndex] of corners) {
+      const shuffled = useItem(initial, 'shuffle', corner).game;
+      assert.equal(shuffled.board[largestIndex], 64);
+      assert.equal(shuffled.board[smallestIndex], 2);
+      assert.deepEqual(shuffled.board.filter(Boolean).sort((a, b) => a - b), values);
+      assert.equal(shuffled.score, 200);
+      assert.equal(shuffled.uses.shuffle, 1);
+    }
+  }
+});
 test('预知下一块后可指定滑动完成后的空位', () => {
   const initial = gameWith([2, 0, 0, 0, ...Array(12).fill(0)]);
   const predicted = useItem(initial, 'foresight', [], () => 0).game;
