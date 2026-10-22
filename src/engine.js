@@ -123,12 +123,17 @@ export function useItem(game, item, selection = [], rng = Math.random) {
   }
   if (item === 'foresight') return { game: used(game, item, { previewValue: nextValue(rng), undo: null }), merges: [] };
   if (item === 'shuffle') {
+    const corner = typeof selection === 'string' ? selection : 'bottom-right';
+    if (!['top-left', 'top-right', 'bottom-left', 'bottom-right'].includes(corner)) throw new Error('请选择最大数字所在角落');
     const values = board.filter(Boolean).sort((a, b) => a - b);
     board.fill(0);
-    // 固定规则：按数值从小到大均匀分布，最小在左上、最大在右下，空位留在中间。
+    // 按数值从小到大均匀分布，再将原来的右下角映射到所选角落。
     values.forEach((value, i) => {
       const index = values.length === 1 ? board.length - 1 : Math.round(i * (board.length - 1) / (values.length - 1));
-      board[index] = value;
+      const row = Math.floor(index / game.size), column = index % game.size;
+      const y = corner.startsWith('top') ? game.size - 1 - row : row;
+      const x = corner.endsWith('left') ? game.size - 1 - column : column;
+      board[y * game.size + x] = value;
     });
     return { game: used(game, item, { board, undo: null, over: !hasMoves(board, game.size) }), merges: [] };
   }
