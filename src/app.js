@@ -63,11 +63,9 @@ function render(spawned, merges = []) {
   $('modeSwitch').setAttribute('aria-pressed', String(isPure()));
   $('modeSwitch').setAttribute('aria-label', isPure() ? '返回普通模式' : '进入纯净模式');
   $('modeSwitchLabel').textContent = isPure() ? '纯净模式' : '普通模式';
-  $('modeSubtitle').textContent = isPure() ? '只留下数字与滑动' : '轻轻滑动，慢慢变大';
   $('journeyCaption').textContent = isPure() ? '纯净模式的分数和成就独立保存在本机。' : '你的进度保存在本机。';
   $('itemsButton').hidden = isPure();
   $('pureInfo').hidden = !isPure();
-  $('journeyDescription').textContent = isPure() ? '纯净成就' : '成就与主题';
   $('mergeBounce').checked = state.settings.mergeBounce;
   document.querySelectorAll('[data-size]').forEach(button => { button.classList.toggle('active', Number(button.dataset.size) === current.activeSize); button.setAttribute('aria-pressed', String(Number(button.dataset.size) === current.activeSize)); });
   $('score').textContent = g.score.toLocaleString(); $('best').textContent = current.best[current.activeSize].toLocaleString();
