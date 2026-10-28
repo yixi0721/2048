@@ -72,7 +72,6 @@ public class MainActivity extends Activity {
         web.setBackgroundColor(0xfff8f3e9);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) web.setDefaultFocusHighlightEnabled(false);
         web.getSettings().setJavaScriptEnabled(true);
-        web.getSettings().setTextZoom(100);
         web.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         web.getSettings().setDomStorageEnabled(true);
         web.getSettings().setAllowFileAccess(false);
