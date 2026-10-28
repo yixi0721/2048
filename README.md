@@ -28,7 +28,14 @@ npm test
 - 每种道具最多存 50 个；道具获取方式和效果见道具抽屉。
 - 主题、棋局、分数和设置保存在本机浏览器存储中。
 
-## 1.1 更新
+## 1.2 更新
 
 详见 [CHANGELOG.md](CHANGELOG.md)。
 
+
+
+## 下载 v1.2
+
+- [网页端 ZIP](https://raw.githubusercontent.com/yixi0721/2048/main/release-assets/v1.2/2048-web-v1.2.zip)
+- [Android 普通版 APK](https://raw.githubusercontent.com/yixi0721/2048/main/release-assets/v1.2/2048-android-v1.2.apk)
+- [Android 全皮肤版 APK](https://raw.githubusercontent.com/yixi0721/2048/main/release-assets/v1.2/2048-android-all-skins-v1.2.apk)
