@@ -8,10 +8,9 @@
 @keyframes merge-bounce{0%{transform:scale(.78);filter:brightness(1.2)}43%{transform:scale(1.16)}68%{transform:scale(.94)}84%{transform:scale(1.035)}100%{transform:scale(1);filter:brightness(1)}}
 
 .drawer-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
-.drawer-trigger{display:flex;align-items:center;text-align:left;gap:11px;border:1px solid #ffffff82;border-radius:17px;background:var(--panel);color:var(--ink,#6a5544);padding:13px 14px;box-shadow:0 8px 25px #65503a18}
-.drawer-trigger>span:nth-child(2){display:flex;flex-direction:column;gap:2px;flex:1}
-.drawer-trigger strong{font-size:15px}.drawer-trigger small{font-size:10px;color:var(--muted,#9c8b7a)}
-.trigger-icon{font-size:23px;color:var(--accent);line-height:1}.trigger-arrow{color:var(--accent)}
+.drawer-trigger{position:relative;display:flex;align-items:center;justify-content:flex-start;text-align:left;gap:11px;border:1px solid #ffffff82;border-radius:17px;background:var(--panel);color:var(--ink,#6a5544);padding:13px 34px 13px 14px;box-shadow:0 8px 25px #65503a18}
+.drawer-trigger strong{font-size:15px}
+.trigger-icon{font-size:23px;color:var(--accent);line-height:1}.trigger-arrow{position:absolute;right:13px;color:var(--accent)}
 dialog.drawer{position:fixed;inset:auto 0 0;width:min(100%,540px);max-width:none;max-height:min(82dvh,780px);margin:0 auto;padding:0;border-radius:25px 25px 0 0;background:var(--panel);color:var(--ink,#6a5544);box-shadow:0 -18px 60px #3d2a243a;overflow:auto}
 .drawer::backdrop{background:#28202a85;backdrop-filter:blur(4px)}
 .drawer-inner{padding:10px 22px max(24px,env(safe-area-inset-bottom))}
@@ -129,7 +128,6 @@ body .stats>div{background:var(--soft);color:var(--ink)}body .chip{background:va
 .mode-orb{display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--soft);color:var(--accent);font-size:20px;line-height:1}
 .drawer-trigger[hidden]{display:none!important}
 body[data-mode=pure] .drawer-actions{grid-template-columns:repeat(2,minmax(0,1fr))}
-body[data-mode=pure] .drawer-trigger{justify-content:flex-start}
 .pure-info{cursor:default}
 .pure-info .trigger-icon{opacity:.75}
 body[data-mode=pure] .topbar h1 span{color:var(--accent)}
