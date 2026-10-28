@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#f8f3e9" />
+    <title>2048</title>
+    <link rel="stylesheet" href="./src/style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="home-link" href="./index.html" aria-label="返回游戏选择">‹</a>
+        <div class="brand">
+          <h1><span>2048</span></h1>
+          <button
+            id="modeSwitch"
+            class="mode-switch"
+            type="button"
+            aria-label="进入纯净模式"
+            aria-pressed="false"
+          >
+            <span class="mode-orb" aria-hidden="true">◌</span
+            ><span id="modeSwitchLabel">普通模式</span>
+          </button>
+        </div>
+        <button
+          class="icon-button"
+          id="helpButton"
+          type="button"
+          aria-label="玩法说明"
+        >
+          ?
+        </button>
+      </header>
+      <section class="toolbar" aria-label="游戏设置">
+        <div class="segmented" role="group" aria-label="棋盘尺寸">
+          <button type="button" data-size="4">4 × 4</button
+          ><button type="button" data-size="5">5 × 5</button>
+        </div>
+        <button id="newGame" class="text-button" type="button">新游戏</button>
+      </section>
+      <section class="scores" aria-label="分数">
+        <div><span>当前分数</span><strong id="score">0</strong></div>
+        <div><span>最高分</span><strong id="best">0</strong></div>
+      </section>
+      <section class="game-area">
+        <div
+          id="board"
+          class="board"
+          role="grid"
+          aria-label="2048 棋盘"
+          tabindex="0"
+        ></div>
+        <div id="overlay" class="overlay hidden" aria-live="polite"></div>
+      </section>
+      <div class="play-footer">
+        <p id="status" class="status" aria-live="polite">
+          方向键或手指滑动，合并相同数字。
+        </p>
+        <label class="motion-toggle"
+          ><input
+            id="mergeBounce"
+            type="checkbox"
+            role="switch"
+            aria-label="Q 弹合成动效"
+          /><span class="switch-track" aria-hidden="true"></span
+          ><span>Q 弹合成</span></label
+        >
+      </div>
+      <nav class="drawer-actions" aria-label="游戏内容">
+        <button
+          id="itemsButton"
+          class="drawer-trigger"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="itemsDrawer"
+        >
+          <span class="trigger-icon">✦</span><strong>道具</strong
+          ><span class="trigger-arrow">⌃</span>
+        </button>
+        <div id="pureInfo" class="drawer-trigger pure-info" hidden>
+          <span class="trigger-icon">◇</span><strong>纯净模式</strong>
+        </div>
+        <button
+          id="journeyButton"
+          class="drawer-trigger"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="journeyDrawer"
+        >
+          <span class="trigger-icon">◈</span><strong>旅程</strong
+          ><span class="trigger-arrow">⌃</span>
+        </button>
+      </nav>
+    </main>
+    <dialog id="itemsDrawer" class="drawer">
+      <div class="drawer-inner">
+        <div class="drawer-handle"></div>
+        <div class="section-heading">
+          <h2>道具</h2>
+          <button class="drawer-close" type="button" aria-label="关闭道具抽屉">
+            ×
+          </button>
+        </div>
+        <p class="drawer-caption">道具跨局保存，每种库存最多 50 个。</p>
+        <div id="items" class="items"></div>
+        <div class="item-guide">
+          <h3>道具怎么获得</h3>
+          <p>
+            累计合成达到 1、3、6、10、15、21、28 次，之后每增加 7
+            次，按道具顺序循环奖励。首次合成 128
+            及以上的新数字也有一次奖励。每个里程碑只奖励一次，撤销不能重复领取。
+          </p>
+          <div class="reward-list">
+            <span>撤销</span><small>累计 1 次 · 首合 8192</small
+            ><span>清除</span><small>累计 3 次 · 首合 128</small
+            ><span>重排</span><small>累计 6 次 · 首合 256</small
+            ><span>续局</span><small>累计 10 次 · 首合 512</small
+            ><span>交换</span><small>累计 15 次 · 首合 1024</small
+            ><span>定点合成</span><small>累计 21 次 · 首合 2048</small
+            ><span>预知</span><small>累计 28 次 · 首合 4096</small>
+          </div>
+          <p>
+            清除方块每局可用 3 次；本局每首次合成一个从 128
+            开始的新最大数字，额外增加 1 次使用机会。
+          </p>
+        </div>
+        <section class="item-effects" aria-labelledby="itemEffectsHeading">
+          <h3 id="itemEffectsHeading">道具效果</h3>
+          <div class="item-effect">
+            <span aria-hidden="true">↶</span>
+            <div>
+              <strong>撤销一步</strong>
+              <p>回到上一步的棋盘和分数；每局最多使用 3 次。</p>
+            </div>
+          </div>
+          <div class="item-effect">
+            <span aria-hidden="true">✦</span>
+            <div>
+              <strong>清除方块</strong>
+              <p>点选一块数字清除；本局合成新的最大数字可增加使用次数。</p>
+            </div>
+          </div>
+          <div class="item-effect">
+            <span aria-hidden="true">⤨</span>
+            <div>
+              <strong>规则重排</strong>
+              <p>选择一个角落放最大数字，其余数字按大小依次排开。</p>
+            </div>
+          </div>
+          <div class="item-effect">
+            <span aria-hidden="true">♡</span>
+            <div>
+              <strong>失败续局</strong>
+              <p>失败后保留最大数字与分数，其余数字减半，2 消失。</p>
+            </div>
+          </div>
+          <div class="item-effect">
+            <span aria-hidden="true">⇄</span>
+            <div>
+              <strong>交换方块</strong>
+              <p>点选两个有数字的方块，交换它们的位置。</p>
+            </div>
+          </div>
+          <div class="item-effect">
+            <span aria-hidden="true">＋</span>
+            <div>
+              <strong>定点合成</strong>
+              <p>点选相邻的相同方块，在选定位置合成并获得分数。</p>
+            </div>
+          </div>
+          <div class="item-effect">
+            <span aria-hidden="true">◉</span>
+            <div>
+              <strong>预知下一块</strong>
+              <p>提前看到下一块数字；移动后点选空位指定生成位置。</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </dialog>
+    <dialog id="journeyDrawer" class="drawer journey-drawer">
+      <div class="drawer-inner journey-scroll">
+        <div class="drawer-handle"></div>
+        <div class="section-heading">
+          <h2>旅程</h2>
+          <button class="drawer-close" type="button" aria-label="关闭旅程抽屉">
+            ×
+          </button>
+        </div>
+        <p class="drawer-caption" id="journeyCaption">你的进度保存在本机。</p>
+        <div class="stats">
+          <div><strong id="totalMerges">0</strong><span>累计合成</span></div>
+          <div><strong id="maxTile">0</strong><span>历史最大方块</span></div>
+        </div>
+        <section
+          id="achievementPanel"
+          class="journey-panel"
+          role="tabpanel"
+          aria-labelledby="achievementsTab"
+        >
+          <div class="achievement-heading">
+            <h3>成就</h3>
+            <span class="achievement-total"
+              >累计合成 <strong id="achievementMergeCount">0</strong> 次</span
+            >
+          </div>
+          <div id="achievements" class="achievement-grid"></div>
+        </section>
+        <section
+          id="themePanel"
+          class="journey-panel"
+          role="tabpanel"
+          aria-labelledby="themesTab"
+          hidden
+        >
+          <h3>主题皮肤</h3>
+          <p class="skin-group-title">初始可用 · 四季配色</p>
+          <div id="starterSkins" class="starter-skins"></div>
+          <p class="skin-group-title">挑战解锁 · 由易到难</p>
+          <div id="challengeSkins" class="challenge-skins"></div>
+        </section>
+      </div>
+      <div class="journey-tabs" role="tablist" aria-label="旅程分区">
+        <span class="journey-slider" aria-hidden="true"></span>
+        <button
+          id="achievementsTab"
+          type="button"
+          role="tab"
+          aria-controls="achievementPanel"
+          aria-selected="true"
+        >
+          成就
+        </button>
+        <button
+          id="themesTab"
+          type="button"
+          role="tab"
+          aria-controls="themePanel"
+          aria-selected="false"
+        >
+          主题
+        </button>
+      </div>
+    </dialog>
+    <dialog id="helpDialog">
+      <form method="dialog">
+        <button class="close" aria-label="关闭" type="submit">×</button>
+        <h2>玩法说明</h2>
+        <p>
+          滑动棋盘或按方向键。相同数字相遇时合成，直到
+          2048，也可以继续挑战更大数字。
+        </p>
+        <p>
+          普通模式的道具获取方式见道具抽屉，每种最多存 50
+          个。纯净模式不能使用道具，棋局、分数与成就独立保存。
+        </p>
+        <p>选择“预知下一块”后，先移动棋盘，再点击一个空位让预知的数字生成。</p>
+      </form>
+    </dialog>
+    <dialog id="newGameDialog" class="new-game-dialog">
+      <form method="dialog">
+        <h2>开始新游戏？</h2>
+        <p id="newGameMessage">当前棋局将重新开始。</p>
+        <div class="dialog-actions">
+          <button class="dialog-cancel" value="cancel" type="submit">
+            继续当前棋局</button
+          ><button id="confirmNewGame" class="dialog-confirm" type="button">
+            确定重开
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <dialog
+      id="shuffleDialog"
+      class="shuffle-dialog"
+      aria-labelledby="shuffleHeading"
+    >
+      <form method="dialog">
+        <h2 id="shuffleHeading">最大数字放在哪里？</h2>
+        <p>选择一个角落，数字会按大小重新排列。</p>
+        <div
+          class="shuffle-corners"
+          role="group"
+          aria-label="选择最大数字所在角落"
+        >
+          <button type="button" data-corner="top-left">左上</button
+          ><button type="button" data-corner="top-right">右上</button
+          ><button type="button" data-corner="bottom-left">左下</button
+          ><button type="button" data-corner="bottom-right">右下</button>
+        </div>
+        <button class="shuffle-cancel" type="submit" value="cancel">
+          取消
+        </button>
+      </form>
+    </dialog>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

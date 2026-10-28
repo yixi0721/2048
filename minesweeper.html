@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f3e9">
+  <title>扫雷</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body class="mine-page">
+  <main class="mine-shell">
+    <header class="mine-header"><a class="home-link" href="./index.html" aria-label="返回游戏选择">‹</a><h1>扫雷</h1><button id="mineHelp" class="icon-button" type="button" aria-label="玩法说明">?</button></header>
+    <div class="mine-controls"><div class="segmented" role="group" aria-label="难度"><button data-level="easy" type="button">初级</button><button data-level="medium" type="button">中级</button><button data-level="hard" type="button">高级</button></div><button id="mineReset" class="text-button" type="button">新游戏</button></div>
+    <div class="mine-stats"><div><span>剩余雷数</span><strong id="mineRemaining">10</strong></div><div><span>时间</span><strong id="mineTime">0</strong></div><div><span>最佳用时</span><strong id="mineBest">—</strong></div></div>
+    <div id="mineZoomControls" class="mine-zoom-controls" hidden><button id="mineZoomToggle" type="button" aria-pressed="false">缩放棋盘</button><div id="mineZoomSteps" hidden><button id="mineZoomOut" type="button" aria-label="缩小棋盘">−</button><output id="mineZoomValue">160%</output><button id="mineZoomIn" type="button" aria-label="放大棋盘">＋</button></div></div>
+    <div class="mine-board-scroll"><div id="mineBoard" class="mine-board" role="grid" aria-label="扫雷棋盘"></div><div id="mineEnd" class="mine-end" hidden role="status" aria-live="polite"><div class="mine-end-card"><button id="mineEndClose" class="mine-end-close" type="button" aria-label="关闭结束提示">×</button><span id="mineEndIcon" class="mine-end-icon" aria-hidden="true"></span><h2 id="mineEndTitle"></h2><p id="mineEndTime"></p><button id="mineEndRestart" type="button">再来一局</button></div></div></div>
+    <div class="mine-footer"><span id="mineStatus" aria-live="polite">点击格子开始</span><button id="flagMode" type="button" aria-pressed="false">⚑ 插旗</button></div>
+  </main>
+  <dialog id="mineHelpDialog"><form method="dialog"><button class="close" type="submit" aria-label="关闭">×</button><h2>扫雷玩法</h2><p>找出所有安全格。数字表示周围八格的地雷数。电脑右键可插旗；手机长按，或打开“插旗”后点击格子。</p></form></dialog>
+  <dialog id="mineResetDialog" class="mine-reset-dialog" aria-labelledby="mineResetHeading"><form method="dialog"><h2 id="mineResetHeading">开始新游戏？</h2><div class="dialog-actions"><button class="dialog-cancel" type="submit" value="cancel">继续当前棋局</button><button id="confirmMineReset" class="dialog-confirm" type="button">确定重开</button></div></form></dialog>
+  <script type="module" src="./src/minesweeper.js"></script>
+</body>
+</html>

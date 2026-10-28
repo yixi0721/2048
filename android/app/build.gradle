@@ -1,0 +1,19 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.cream.game2048'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.cream.game2048'
+        minSdk 24
+        targetSdk 34
+        versionCode 4
+        versionName '1.3'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+

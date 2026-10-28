@@ -2,6 +2,8 @@ import { cp, mkdir, rm, stat } from 'node:fs/promises';
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/src', { recursive: true });
 await cp('index.html', 'dist/index.html');
+await cp('2048.html', 'dist/2048.html');
+await cp('minesweeper.html', 'dist/minesweeper.html');
 await cp('src', 'dist/src', { recursive: true });
 try {
   await stat('android/app/src/main');
