@@ -1,4 +1,4 @@
-# 2048 v1.1
+# 2048 v1.2
 
 本地运行的 2048 网页游戏，支持手机触控和电脑方向键、4×4 与 5×5 棋盘、普通模式与纯净模式、主题皮肤、道具、成就和本地存档。无需安装第三方网页依赖。
 
@@ -32,8 +32,3 @@ npm test
 
 详见 [CHANGELOG.md](CHANGELOG.md)。
 
-## 下载 v1.1
-
-- [网页端 ZIP](https://raw.githubusercontent.com/yixi0721/2048/main/release-assets/v1.1/2048-%E7%BD%91%E9%A1%B5%E7%AB%AF-1.1.zip)
-- [Android 普通版 APK](https://raw.githubusercontent.com/yixi0721/2048/main/release-assets/v1.1/2048-%E6%99%AE%E9%80%9A%E7%89%88-1.1.apk)
-- [Android 全皮肤解锁版 APK](https://raw.githubusercontent.com/yixi0721/2048/main/release-assets/v1.1/2048-%E5%85%A8%E7%9A%AE%E8%82%A4%E8%A7%A3%E9%94%81%E7%89%88-1.1.apk)
